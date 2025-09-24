@@ -7,7 +7,7 @@ public class Product {
     private Category category;
     private int price;
     private String discription;
-    private int quantity;
+    private Integer quantity;
 
     public Product(String name,Category category,int price, String discription, int quantity) {
         this.name = name;
