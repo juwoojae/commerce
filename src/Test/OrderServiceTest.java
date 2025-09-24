@@ -76,5 +76,6 @@ public class OrderServiceTest {
         assertEquals(3750000,orderService.calculateOrder());
         orderService.finalizeOrder(); //주문완료
         assertEquals(23,productRepository.findByName("Galaxy S24").getQuantity());
+        assertFalse(orderService.hasOrder());
     }
 }

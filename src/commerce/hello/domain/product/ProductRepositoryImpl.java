@@ -16,13 +16,6 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findById(long id) {
-        return store.stream()
-                .filter(product -> (product.getId() == id))
-                .collect(Collectors.toList()).getFirst();
-    }
-
-    @Override
     public Product findByName(String name) {
         return store.stream()
                 .filter(product -> product.getName().equals(name))
@@ -38,8 +31,8 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product update(long productId, Product updateProduct) {
-        Product findProduct = findById(productId);
+    public Product update(String name, Product updateProduct) {
+        Product findProduct = findByName(name);
         findProduct.setDiscription(updateProduct.getDiscription());
         findProduct.setPrice(updateProduct.getPrice());
         findProduct.setQuantity(updateProduct.getQuantity());
@@ -47,9 +40,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product delete(Product product) {
-        store.remove(product);
-        return product;
+    public Product delete(String name) {
+        Product findProduct=findByName(name);
+        store.remove(findByName(name));
+        return findProduct;
     }
 
 }

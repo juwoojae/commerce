@@ -1,27 +1,34 @@
 package commerce.hello.service.managerSevice;
 
-import commerce.hello.authentication.Authentication;
+import commerce.hello.domain.product.Category;
 import commerce.hello.domain.product.Product;
 import commerce.hello.domain.product.ProductRepository;
 
-public class ManagerServiceImpl {
+import java.util.List;
+
+public class ManagerServiceImpl implements ManagerService {
 
     private final ProductRepository productRepository;
-    private final Authentication authentication;
 
-    public ManagerServiceImpl(Authentication authentication, ProductRepository productRepository) {
-        this.authentication = authentication;
+    public ManagerServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-
-    public Product register(Product product){
+    @Override
+    public Product register(Product product) {
         productRepository.save(product);
         return product;
     }
-    public Product findProduct(long id){
-        return productRepository.findById(id);
+    @Override
+    public Product remove(String name){
+        return productRepository.delete(name);
     }
-
-
+    @Override
+    public Product update(String name,Product product){
+        return productRepository.update(name, product);
+    }
+    @Override
+    public List<Product> ListProducts(Category category){
+        return productRepository.findAll(category);
+    }
 }
 

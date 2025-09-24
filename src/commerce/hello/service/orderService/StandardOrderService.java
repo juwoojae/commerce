@@ -70,6 +70,15 @@ public class StandardOrderService implements OrderService {
     }
 
     /**
+     * 장바구니에 주문이 있는지 없는지 판단하는 메서드
+     * 있으면 true , 없으면 false 를
+     */
+    @Override
+    public boolean hasOrder() {
+        return !orderRepository.storeIsEmpty();
+    }
+
+    /**
      * 장바구니의 리스트를 반환하는 메서드
      */
     @Override

@@ -14,5 +14,7 @@ public interface OrderService {
 
     void finalizeOrder();
 
+    boolean hasOrder();
+
     List<Product> listOrders();
 }

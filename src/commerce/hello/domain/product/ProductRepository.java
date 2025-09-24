@@ -9,14 +9,12 @@ import java.util.List;
 public interface ProductRepository {
     Product save(Product product);
 
-    Product findById(long idx);
-
     Product findByName(String name);
 
     List<Product> findAll(Category category);
 
-    Product update(long productId, Product updateProduct);
+    Product update(String name, Product updateProduct);
 
-    Product delete(Product product);
+    Product delete(String name);
 
 }
