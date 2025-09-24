@@ -1,4 +1,4 @@
-package commerce.hello.service;
+package commerce.hello.service.managerSevice;
 
 /**
  * 관리자 서비스

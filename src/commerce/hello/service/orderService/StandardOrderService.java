@@ -1,17 +1,18 @@
-package commerce.hello.service;
+package commerce.hello.service.orderService;
 
 import commerce.hello.OutOfStockException;
 import commerce.hello.domain.order.OrderRepository;
 import commerce.hello.domain.product.Product;
 import commerce.hello.domain.product.ProductRepository;
+
 import java.util.*;
 
-public class OrderServiceImpl implements OrderService {
+public class StandardOrderService implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository) {
+    public StandardOrderService(OrderRepository orderRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
     }

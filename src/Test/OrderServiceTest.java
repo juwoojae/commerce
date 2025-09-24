@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import commerce.hello.domain.product.ProductRepository;
 import commerce.hello.domain.product.ProductRepositoryImpl;
-import commerce.hello.service.OrderService;
-import commerce.hello.service.OrderServiceImpl;
+import commerce.hello.service.orderService.OrderService;
+import commerce.hello.service.orderService.StandardOrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ public class OrderServiceTest {
 
     ProductRepository productRepository = new ProductRepositoryImpl();
     OrderRepository orderRepository = new OrderRepositoryImpl();
-    OrderService orderService = new OrderServiceImpl(orderRepository,productRepository);
+    OrderService orderService = new StandardOrderService(orderRepository,productRepository);
 
     @BeforeEach
     void beforEach(){

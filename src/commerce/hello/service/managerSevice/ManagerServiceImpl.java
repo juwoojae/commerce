@@ -1,7 +1,6 @@
-package commerce.hello.service;
+package commerce.hello.service.managerSevice;
 
 import commerce.hello.authentication.Authentication;
-import commerce.hello.domain.member.Member;
 import commerce.hello.domain.product.Product;
 import commerce.hello.domain.product.ProductRepository;
 

@@ -1,10 +1,9 @@
-package commerce.hello.service;
+package commerce.hello.service.orderService;
 
 
 import commerce.hello.domain.product.Product;
 
 import java.util.List;
-import java.util.List.*;
 
 
 public interface OrderService {
