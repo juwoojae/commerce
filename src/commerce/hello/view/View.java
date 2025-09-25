@@ -169,5 +169,6 @@ public class View {
     public static void removeProductMessage(Product product){
         System.out.printf("%s 가 재고에서 삭제되었습니다.",product.getName());
     }
+    // 여기서부터 QueryService 로직
 
 }

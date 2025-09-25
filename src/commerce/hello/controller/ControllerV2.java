@@ -63,13 +63,13 @@ public class ControllerV2 extends ControllerV1 {
     }
 
 
-    private void addProductController() throws IOException {
+    public void addProductController() throws IOException {
         View.addProduct();
         int cmd = Integer.parseInt(bufferedReader.readLine());
         addProductFormController(cmd);
     }
 
-    private void addProductFormController(int code) throws IOException {
+    public void addProductFormController(int code) throws IOException {
         View.addProductForm(code);
         Product addProduct = new Product();
         // 상품명 입력
@@ -89,7 +89,7 @@ public class ControllerV2 extends ControllerV1 {
         confirmAddProductFormController(addProduct);
     }
 
-    private void confirmAddProductFormController(Product product) throws IOException {
+    public void confirmAddProductFormController(Product product) throws IOException {
         View.confirmAddProductForm(product);
         int cmd = Integer.parseInt(bufferedReader.readLine());
         if (cmd == 1) {
@@ -102,11 +102,11 @@ public class ControllerV2 extends ControllerV1 {
         }
     }
 
-    private void confirmAddProductMessageController() {
+    public void confirmAddProductMessageController() {
         View.confirmAddProductMessage();
     }
 
-    private void editProductController() throws IOException {
+    public void editProductController() throws IOException {
         try {
             View.editProduct();
             String editName = bufferedReader.readLine();
@@ -122,7 +122,7 @@ public class ControllerV2 extends ControllerV1 {
         }
     }
 
-    private void editProductOptionController(Product product) throws IOException {
+    public void editProductOptionController(Product product) throws IOException {
         View.editProductOption();
         int cmd = Integer.parseInt(bufferedReader.readLine());
         try {
@@ -144,25 +144,25 @@ public class ControllerV2 extends ControllerV1 {
         }
     }
 
-    private void editProductFormPriceController(Product product) throws IOException {
+    public void editProductFormPriceController(Product product) throws IOException {
         View.editProductFormPrice(product);
         int newPrice = Integer.parseInt(bufferedReader.readLine());
         editProductFormPriceMessageController(product, newPrice);
     }
 
-    private void editProductFormDiscriptionController(Product product) throws IOException {
+    public void editProductFormDiscriptionController(Product product) throws IOException {
         View.editProductFormDiscription(product);
         String newDiscription = bufferedReader.readLine();
         editProductFormDiscriptionMessageController(product, newDiscription);
     }
 
-    private void editProductFormQuantityController(Product product) throws IOException {
+    public void editProductFormQuantityController(Product product) throws IOException {
         View.editProductFormQuantiry(product);
         int newQuantity = Integer.parseInt(bufferedReader.readLine());
         editProductFormQuantiryMessageController(product, newQuantity);
     }
 
-    private void editProductFormPriceMessageController(Product oldProduct, int newPrice) throws IOException {
+    public void editProductFormPriceMessageController(Product oldProduct, int newPrice) throws IOException {
         View.editProductFormPriceMessage(oldProduct, newPrice);
         Product newProduct = oldProduct;  //옛 상품에서 가격만 바꾸기
         newProduct.setPrice(newPrice);
@@ -170,7 +170,7 @@ public class ControllerV2 extends ControllerV1 {
         managerOptionController();
     }
 
-    private void editProductFormDiscriptionMessageController(Product oldProduct, String newDiscription) throws IOException {
+    public void editProductFormDiscriptionMessageController(Product oldProduct, String newDiscription) throws IOException {
         View.editProductFormDiscriptionMessage(oldProduct, newDiscription);
         Product newProduct = oldProduct;  //옛 상품에서 가격만 바꾸기
         newProduct.setDiscription(newDiscription);
@@ -178,7 +178,7 @@ public class ControllerV2 extends ControllerV1 {
         managerOptionController();
     }
 
-    private void editProductFormQuantiryMessageController(Product oldProduct, int newQuantity) throws IOException {
+    public void editProductFormQuantiryMessageController(Product oldProduct, int newQuantity) throws IOException {
         View.editProductFormPriceMessage(oldProduct, newQuantity);
         Product newProduct = oldProduct;  //옛 상품에서 가격만 바꾸기
         newProduct.setPrice(newQuantity);
@@ -186,7 +186,7 @@ public class ControllerV2 extends ControllerV1 {
         managerOptionController();
     }
 
-    private void removeProductController() throws IOException {
+    public void removeProductController() throws IOException {
         try {
             View.removeProductFrom();
             String editName = bufferedReader.readLine();
@@ -201,7 +201,7 @@ public class ControllerV2 extends ControllerV1 {
             removeProductController();
         }
     }
-    private void removeProductMessageController(Product product) throws IOException {
+    public void removeProductMessageController(Product product) throws IOException {
         managerService.remove(product.getName());
         View.removeProductMessage(product);
         managerOptionController();
