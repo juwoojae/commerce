@@ -19,7 +19,7 @@ import static commerce.hello.domain.product.Category.ELECTRONIC;
 
 public class OrderServiceTest {
 
-    ProductRepository productRepository = new ProductRepositoryImpl();
+    ProductRepository productRepository = ProductRepositoryImpl.getInstance();
     OrderRepository orderRepository = new OrderRepositoryImpl();
     OrderService orderService = new StandardOrderService(orderRepository,productRepository);
 

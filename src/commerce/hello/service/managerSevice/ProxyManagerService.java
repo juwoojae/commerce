@@ -33,8 +33,4 @@ public class ProxyManagerService implements ManagerService{
         return managerService.update(name, product);
     }
 
-    @Override
-    public List<Product> ListProducts(Category category) {
-        return managerService.ListProducts(category);
-    }
 }

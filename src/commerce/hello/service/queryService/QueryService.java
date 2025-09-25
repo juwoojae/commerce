@@ -9,4 +9,6 @@ public interface QueryService {
     List<Product> findProductsOver(Category category);
 
     List<Product> findProductsUnder(Category category);
+
+    List<Product> listProducts(Category category);
 }

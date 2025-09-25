@@ -22,10 +22,6 @@ public class OrderRepositoryImpl implements OrderRepository{
         store.add(product);
         return product;
     }
-    /**
-     * 클라이언트가 장바구니 조회를 하기위해 장바구니(store) 를 리턴
-     * @return : store 를 얕은복사를 통해서 반환(캡슐화)
-     */
     @Override
     public Product findByName(String name){
         return store.stream()
@@ -33,6 +29,10 @@ public class OrderRepositoryImpl implements OrderRepository{
                 .findFirst()  // Optional<Product> 반환
                 .orElse(null);  // 못 찾으면 null 반환
     }
+    /**
+     * 클라이언트가 장바구니 조회를 하기위해 장바구니(store) 를 리턴
+     * @return : store 를 얕은복사를 통해서 반환(캡슐화)
+     */
     @Override
     public List<Product> findAll() {
         return new ArrayList<>(store);

@@ -17,5 +17,4 @@ public interface ManagerService  {
 
     Product update(String name, Product product);
 
-    List<Product> ListProducts(Category category);
 }

@@ -39,4 +39,9 @@ public class QueryServiceImpl implements QueryService{
                 .filter(product -> product.getPrice() < 1000000)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Product> listProducts(Category category){
+        return productRepository.findAll(category);
+    }
 }

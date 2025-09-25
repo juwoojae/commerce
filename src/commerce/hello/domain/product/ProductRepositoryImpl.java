@@ -8,6 +8,16 @@ public class ProductRepositoryImpl implements ProductRepository {
     private static final List<Product> store = new ArrayList<>();
     private static long sequence = 0L;
 
+    /**
+     * 모든 service 가 ProductRepository 를 공유하므로 싱글톤으로 관리한다
+     */
+    private static final ProductRepositoryImpl instance = new ProductRepositoryImpl();
+    private ProductRepositoryImpl() {
+    }
+    public static ProductRepositoryImpl getInstance(){
+        return instance;
+    }
+
     @Override
     public Product save(Product product) {
         product.setId(++sequence);

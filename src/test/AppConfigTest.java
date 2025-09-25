@@ -13,6 +13,7 @@ import commerce.hello.service.managerSevice.ProxyManagerService;
 import commerce.hello.service.orderService.GradeBasedOrderService;
 import commerce.hello.service.orderService.OrderService;
 import commerce.hello.service.orderService.StandardOrderService;
+import commerce.hello.service.queryService.QueryService;
 import commerce.hello.web.AppConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,9 @@ public class AppConfigTest {
     AppConfig appConfig = new AppConfig();
     ProductRepository productRepository = appConfig.productRepository();
     OrderRepository orderRepository = appConfig.orderRepository();
-    OrderService orderService = appConfig.orderService(orderRepository, productRepository);
-    ManagerService managerService = appConfig.managerService(new ManagerServiceImpl(productRepository), "1q2w3e4r!@");
+    OrderService orderService = appConfig.orderService();
+    ManagerService managerService = appConfig.managerService("1q2w3e4r!@");
+    QueryService queryService = appConfig.queryService();
 
     @BeforeEach
     void beforEach(){
@@ -90,5 +92,10 @@ public class AppConfigTest {
         System.out.println(product1);
         assertEquals(100,productRepository.findByName("new2").getPrice());
 
+    }
+    @Test
+    void quaryServiceTest(){
+        System.out.println(queryService.listProducts(ELECTRONIC));
+        System.out.println(queryService.listProducts(ELECTRONIC).size());
     }
 }

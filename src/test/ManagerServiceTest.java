@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ManagerServiceTest {
 
-    ProductRepository productRepository = new ProductRepositoryImpl();
+    ProductRepository productRepository = ProductRepositoryImpl.getInstance();
     OrderRepository orderRepository = new OrderRepositoryImpl();
     OrderService orderService = new StandardOrderService(orderRepository,productRepository);
 
