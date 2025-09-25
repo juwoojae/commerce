@@ -90,4 +90,9 @@ public class StandardOrderService implements OrderService {
     public List<Product> listOrders(){
         return orderRepository.findAll();
     }
+
+    @Override
+    public void clear() {
+        orderRepository.clearStore();
+    }
 }

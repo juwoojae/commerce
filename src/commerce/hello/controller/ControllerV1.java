@@ -43,8 +43,8 @@ public class ControllerV1 {
         }
     }
 
-    public void productsController(Category model) throws IOException {
-        List<Product> products = queryService.listProducts(model);
+    public void productsController(Category category) throws IOException {
+        List<Product> products = queryService.listProducts(category);
         View.products(products); //해당 카테고리 리스트 조회
         if (orderService.hasOrder()) { //장바구니에 주문이 하나라도 있는경우
             int size = products.size();
@@ -79,13 +79,21 @@ public class ControllerV1 {
     }
 
     public void orderCleanController() {
+        orderService.clear();
         View.orderClean();
     }
 
+    /**
+     * 매개변수로 받은 product 를 장바구니에 추가하기
+     * 이전화면으로 롤백하려면 이전 조회 내용이 필요한데 이롤code 로구분하자
+     * @param product
+     * @param
+     * @throws IOException
+     */
     public void orderFormController(Product product) throws IOException {
         View.orderForm(product); //장바구니 폼 출력
         int cmd = Integer.parseInt(bufferedReader.readLine());
-        if (cmd == 1) {
+        if (cmd == 1) { //장바구니에 추가하기
             try {
                 orderService.addOrder(new Product(product.getName()
                         , product.getCategory()
@@ -93,11 +101,12 @@ public class ControllerV1 {
                         , product.getDiscription()
                         , 1)); //상품 장바구니에 추가 (장바구니 추가는 1개씩만 가능함)
                 addOrderSuccessfulMessageController(product);
+                indexController();
             } catch (OutOfStockException e) {
                 addOrderFailedMessageController(); //장바구니 추가 실패 메세지 출력
+                indexController();
             }
-            productsController(product.getCategory());
-        } else if (cmd == 2) productsController(product.getCategory());
+        } else if (cmd == 2) indexController();//아무런 작없없이 이전화면출력
         else throw new InvalidateCmdException("잘못된 명령어 입니다");
     }
 

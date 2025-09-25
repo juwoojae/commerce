@@ -97,5 +97,8 @@ public class AppConfigTest {
     void quaryServiceTest(){
         System.out.println(queryService.listProducts(ELECTRONIC));
         System.out.println(queryService.listProducts(ELECTRONIC).size());
+        System.out.println(queryService.findProductsOver(ELECTRONIC));
+        System.out.println(queryService.findProductsUnder(ELECTRONIC));
+
     }
 }

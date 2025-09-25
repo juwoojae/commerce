@@ -19,4 +19,6 @@ public interface OrderService {
     boolean hasOrder();
 
     List<Product> listOrders();
+
+    void clear();
 }
