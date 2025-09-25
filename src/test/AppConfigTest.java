@@ -10,6 +10,7 @@ import commerce.hello.exception.SecurityException;
 import commerce.hello.service.managerSevice.ManagerService;
 import commerce.hello.service.managerSevice.ManagerServiceImpl;
 import commerce.hello.service.managerSevice.ProxyManagerService;
+import commerce.hello.service.orderService.GradeBasedOrderService;
 import commerce.hello.service.orderService.OrderService;
 import commerce.hello.service.orderService.StandardOrderService;
 import commerce.hello.web.AppConfig;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
+import static commerce.hello.domain.member.Grade.GOLD;
 import static commerce.hello.domain.product.Category.ELECTRONIC;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,6 +55,9 @@ public class AppConfigTest {
         assertThrows(OutOfStockException.class, ()->{
             this.orderService.addOrder(new Product("AirPods Pro", ELECTRONIC, 350000, "노이즈 캔슬링 무선 이어폰", 1));});
         assertEquals(1,orderRepository.findByName("AirPods Pro").getQuantity());
+        int calculateOrder = orderService.calculateOrder();
+        GradeBasedOrderService gradeBasedOrderService = (GradeBasedOrderService) orderService;
+        int calculateOrder1 = gradeBasedOrderService.calculateOrder(GOLD);
     }
     @Test
     void finalizeOrderTest(){

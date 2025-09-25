@@ -1,6 +1,7 @@
 package commerce.hello.service.orderService;
 
 
+import commerce.hello.domain.product.Category;
 import commerce.hello.domain.product.Product;
 
 import java.util.List;

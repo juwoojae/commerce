@@ -9,8 +9,8 @@ import java.util.*;
 
 public class StandardOrderService implements OrderService {
 
-    private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
+    protected final OrderRepository orderRepository;
+    protected final ProductRepository productRepository;
 
     public StandardOrderService(OrderRepository orderRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;

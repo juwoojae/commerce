@@ -7,6 +7,7 @@ import commerce.hello.domain.product.ProductRepository;
 import commerce.hello.domain.product.ProductRepositoryImpl;
 import commerce.hello.service.managerSevice.ManagerService;
 import commerce.hello.service.managerSevice.ProxyManagerService;
+import commerce.hello.service.orderService.GradeBasedOrderService;
 import commerce.hello.service.orderService.OrderService;
 import commerce.hello.service.orderService.StandardOrderService;
 import commerce.hello.service.queryService.QueryService;
@@ -23,7 +24,8 @@ public class AppConfig {
         return new OrderRepositoryImpl();
     }
     public OrderService orderService(OrderRepository orderRepository, ProductRepository productRepository){
-        return new StandardOrderService(orderRepository, productRepository);
+        //return new StandardOrderService(orderRepository, productRepository);
+        return new GradeBasedOrderService(orderRepository, productRepository);
     }
     public ManagerService managerService(ManagerService managerService,String password){
         return new ProxyManagerService(managerService, password);
