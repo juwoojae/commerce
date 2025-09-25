@@ -10,7 +10,7 @@ public class ProxyManagerService implements ManagerService{
     private final String MANAGER_PASSWORD = "1q2w3e4r!@";
     private final ManagerService managerService;
 
-    public ProxyManagerService(ManagerService managerService,String password) {
+    public ProxyManagerService(ManagerService managerService,String password) throws SecurityException {
         if(MANAGER_PASSWORD.equals(password))
             this.managerService = managerService;
         else
@@ -31,6 +31,11 @@ public class ProxyManagerService implements ManagerService{
     @Override
     public Product update(String name, Product product) {
         return managerService.update(name, product);
+    }
+
+    @Override
+    public Product findProduct(String name) {
+        return managerService.findProduct(name);
     }
 
 }

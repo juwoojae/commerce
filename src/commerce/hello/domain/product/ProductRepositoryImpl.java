@@ -20,7 +20,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        product.setId(++sequence);
         store.add(product);
         return product;
     }

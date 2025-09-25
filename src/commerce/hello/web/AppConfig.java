@@ -13,7 +13,7 @@ import commerce.hello.service.orderService.OrderService;
 import commerce.hello.service.orderService.StandardOrderService;
 import commerce.hello.service.queryService.QueryService;
 import commerce.hello.service.queryService.QueryServiceImpl;
-
+import commerce.hello.exception.SecurityException;
 /**
  * 의존관계 주입을 해주는 IoC 컨테이너
  */
@@ -28,7 +28,7 @@ public class AppConfig {
         //return new StandardOrderService(orderRepository, productRepository);
         return new GradeBasedOrderService(orderRepository(), productRepository());
     }
-    public ManagerService managerService(String password){
+    public ManagerService managerService(String password) throws SecurityException {
         return new ProxyManagerService(new ManagerServiceImpl(productRepository()), password);
     }
     public QueryService queryService(){

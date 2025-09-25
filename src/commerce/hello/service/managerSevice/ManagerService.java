@@ -17,4 +17,5 @@ public interface ManagerService  {
 
     Product update(String name, Product product);
 
+    Product findProduct(String name);
 }

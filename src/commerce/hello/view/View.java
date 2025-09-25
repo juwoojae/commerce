@@ -1,8 +1,10 @@
 package commerce.hello.view;
 
+import commerce.hello.domain.product.Category;
 import commerce.hello.domain.product.Product;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class View {
@@ -12,7 +14,7 @@ public class View {
         System.out.println("1. 전자제품");
         System.out.println("2. 의류 ");
         System.out.println("3. 식품 ");
-        System.out.println("4. 종료        | 프로그램 종료");
+        System.out.println("0. 종료        | 프로그램 종료");
         System.out.println("6. 관리자 모드");
         System.out.printf("입력: ");
     }
@@ -45,7 +47,7 @@ public class View {
         System.out.println("해당상품은 현재 재고가 없습니다");
     }
 
-    public static void orderManager(int size) {
+    public static void orderOption(int size) {
         System.out.println();
         System.out.println("[ 주문 관리 ]");
         System.out.printf("%d. 장바구니 확인\n", size + 1);
@@ -76,6 +78,96 @@ public class View {
         for (String string : result.keySet()) {
             System.out.printf("%s 재고가 %d개 → %d개로 업데이트되었습니다.\n", string, result.get(string)[0], result.get(string)[1]);
         }
+    }
+
+
+    //여기서부터 관리자 서비스
+    public static void authenticateManagerForm(){
+        System.out.println();
+        System.out.printf("관리자 비밀번호를 입력해주세요: ");
+    }
+    public static void managerOption(){
+        System.out.println();
+        System.out.println("[ 관리자 모드 ]");
+        System.out.println("1. 상품 추가");
+        System.out.println("2. 상품 수정");
+        System.out.println("3. 상품 삭제");
+        System.out.println("0. 메인으로 돌아가기");
+    }
+    public static void addProduct(){
+        System.out.println();
+        System.out.println("어느 카테고리에 상품을 추가하시겠습니까?");
+        System.out.println("1. 전자제품");
+        System.out.println("2. 의류");
+        System.out.println("3. 식품");
+    }
+
+    //addProductForm 의 View 시작
+    public static void addProductForm(int code){
+        System.out.printf("[ %s 카테고리에 상품 추가 ]\n", Category.codeToCategory(code).getName());
+    }
+    public static void addProductFormName(){
+        System.out.printf("상품명을 입력해주세요: ");
+    }
+    public static void addProductFormPrice(){
+        System.out.printf("가격을 입력해주세요: ");
+    }
+    public static void addProductFormDiscription(){
+        System.out.printf("상품 설명을 입력해주세요: ");
+    }
+    public static void addProductFormQuantity(){
+        System.out.printf("재고수량을 입력해주세요: ");
+    }
+    //addProductForm 의 View 끝
+
+    public static void confirmAddProductForm(Product product) {
+        System.out.println();
+        System.out.printf("선택한 상품: %s \n", product);
+        System.out.println("위 정보로 상품을 추가하시겠습니까?");
+        System.out.println("1. 확인        2. 취소");
+        System.out.printf("입력: ");
+    }
+    public static void confirmAddProductMessage(){
+        System.out.println("상품이 성공적으로 추가되었습니다! ");
+    }
+    public static void editProduct(){
+        System.out.printf("수정할 상품명을 입력해주세요: ");
+    }
+    public static void editProductOption(){
+        System.out.println("1. 가격");
+        System.out.println("2. 설명");
+        System.out.println("3. 수량");
+    }
+
+    public static void editProductFormPrice(Product product){
+        System.out.printf("현재 가격: %d%n", product.getPrice());
+        System.out.print("새로운 가격을 입력해주세요: ");
+    }
+    public static void editProductFormDiscription(Product Product){
+        System.out.printf("현재 설명: %s%n", Product.getDiscription());
+        System.out.print("새로운 설명을 입력해주세요: ");
+    }
+    public static void editProductFormQuantiry(Product Product){
+        System.out.printf("현재 재고수량: %d%n", Product.getQuantity());
+        System.out.print("새로운 재고수량을 입력해주세요: ");
+    }
+    public static void editProductFormPriceMessage(Product oldProduct, int newPrice) {
+        System.out.printf("%s의 가격이 %,d원 → %,d원으로 수정되었습니다.%n",
+                oldProduct.getName(), oldProduct.getPrice(), newPrice);
+    }
+    public static void editProductFormDiscriptionMessage(Product oldProduct,String newDiscription) {
+        System.out.printf("%s의 설명이 '%s' → '%s'으로 수정되었습니다.%n",
+                oldProduct.getName(), oldProduct.getDiscription(), newDiscription);
+    }
+    public static void editProductFormQuantiryMessage(Product oldProduct, int newQuantity) {
+        System.out.printf("%s의 재고수량이 %d → %d으로 수정되었습니다.%n",
+                oldProduct.getName(), oldProduct.getQuantity(), newQuantity);
+    }
+    public static void removeProductFrom(){
+        System.out.printf("제거할 상품의 이름을 입력하세요: ");
+    }
+    public static void removeProductMessage(Product product){
+        System.out.printf("%s 가 재고에서 삭제되었습니다.",product.getName());
     }
 
 }

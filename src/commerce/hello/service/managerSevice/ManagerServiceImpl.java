@@ -26,5 +26,11 @@ public class ManagerServiceImpl implements ManagerService {
     public Product update(String name,Product product){
         return productRepository.update(name, product);
     }
+
+    @Override
+    public Product findProduct(String name) {
+        return productRepository.findByName(name);
+    }
+
 }
 

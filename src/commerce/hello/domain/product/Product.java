@@ -2,14 +2,15 @@ package commerce.hello.domain.product;
 
 public class Product {
 
-    private long id;
     private String name;
     private Category category;
     private int price;
     private String discription;
     private Integer quantity;
 
-    public Product(String name,Category category,int price, String discription, int quantity) {
+    public Product() {
+    }
+    public Product(String name, Category category, int price, String discription, int quantity) {
         this.name = name;
         this.category = category;
         this.price = price;
@@ -41,12 +42,12 @@ public class Product {
         return price;
     }
 
-    public long getId() {
-        return id;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public void setPrice(int price) {
