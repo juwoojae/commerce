@@ -1,57 +1,141 @@
 package commerce.hello.controller;
 
+import commerce.hello.domain.product.Category;
 import commerce.hello.domain.product.Product;
 import commerce.hello.domain.product.ProductRepository;
+import commerce.hello.exception.InvalidateCmdException;
+import commerce.hello.exception.OutOfStockException;
 import commerce.hello.service.managerSevice.ManagerService;
 import commerce.hello.service.orderService.OrderService;
 import commerce.hello.service.queryService.QueryService;
+import commerce.hello.view.View;
 import commerce.hello.web.AppConfig;
+
 import static commerce.hello.domain.product.Category.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
 
+import static commerce.hello.view.View.finalizeOrderForm;
 import static commerce.hello.view.View.index;
-import static commerce.hello.view.View.product;
 
 public class ConsoleController {
 
-static AppConfig appConfig = new AppConfig();
-static OrderService orderService = appConfig.orderService();
-static ManagerService managerService = appConfig.managerService("1q2w3e4r!@");
-static QueryService queryService = appConfig.queryService();
+    static AppConfig appConfig = new AppConfig();
+    static OrderService orderService = appConfig.orderService();
+    static ManagerService managerService = appConfig.managerService("1q2w3e4r!@");
+    static QueryService queryService = appConfig.queryService();
 
-static ProductRepository productRepository = appConfig.productRepository(); //init 을 위해서 사용
-static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    static ProductRepository productRepository = appConfig.productRepository(); //init 을 위해서 사용
+    static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-
-public static void main(String[] args) throws IOException {
-    init();
-    index();
-    int cmd = Integer.parseInt(bufferedReader.readLine());
-    switch (cmd) {
-        case 1:
-            product(ELECTRONIC);
-            cmd = Integer.parseInt(bufferedReader.readLine());
-
-            break; // switch 블록 빠져나오기
-        case 2:
-            product(CLOTHES);
-            break;
-        case 3:
-            product(FOOD);
-
-        default:
-            System.exit(1);
-            // 어느 case와도 일치하지 않을 때 실행
+    {
+        init();
     }
-    int cmd = Integer.parseInt(bufferedReader.readLine());
 
-}
+    //View.index 의 컨트롤러 메서드
+    public void indexController() throws IOException {
+        index();
+        int cmd = Integer.parseInt(bufferedReader.readLine());
+        if (0 < cmd && cmd < 4) {
+            productsController(Category.codeToCategory(cmd));
+        } else if (cmd == 0) {
+            System.exit(0);
+        } else if (cmd == 6) {
+            //관리자 모드 실행
+        } else {  //그 이외의 cmd 예외처리
+            throw new InvalidateCmdException("잘못된 명령어 입니다");
+        }
+    }
 
-    public static void init(){
+    //View.products 의 컨트롤러 메서드
+    public void productsController(Category model) throws IOException {
+        List<Product> products = queryService.listProducts(model);
+        View.products(products); //해당 카테고리 리스트 조회
+        if (orderService.hasOrder()) { //장바구니에 주문이 하나라도 있는경우
+            int size = products.size();
+            orderManagerController(size);
+            int cmd = Integer.parseInt(bufferedReader.readLine());
+            if (0 < cmd && cmd <= size) {
+                orderFormController(products.get(cmd - 1)); //선택한 상품 장바구니 추가 퐄으로 이동
+            } else if (cmd == 0) {//뒤로가기
+                indexController();
+            } else if (cmd == size + 1) { //장바구니 확인
+                finalizeOrderFormController(orderService.listOrders(), orderService.calculateOrder());
+            } else if (cmd == size + 2) { //주문 취소 -> 첫화면으로 돌아가기
+                orderCleanController();
+                indexController();
+            } else {  //그 이외의 cmd 예외처리
+                throw new InvalidateCmdException("잘못된 명령어 입니다");
+            }
+        } else { //장바구니에 주문이 없는경우
+            int cmd = Integer.parseInt(bufferedReader.readLine());
+            if (0 < cmd && cmd <= products.size()) {
+                orderFormController(products.get(cmd - 1));
+            } else if (cmd == 0) {//뒤로가기
+                indexController();
+            } else {  //그 이외의 cmd 예외처리
+                throw new InvalidateCmdException("잘못된 명령어 입니다");
+            }
+        }
+    }
+
+    private static void orderManagerController(int size) {
+        View.orderManager(size); //주문관리 출력하기
+    }
+
+    private static void orderCleanController() {
+        View.orderClean();
+    }
+
+    //View.orderForm 의 컨트롤러 메서드
+    public void orderFormController(Product product) throws IOException {
+        View.orderForm(product); //장바구니 폼 출력
+        int cmd = Integer.parseInt(bufferedReader.readLine());
+        if (cmd == 1) {
+            try {
+                orderService.addOrder(new Product(product.getName()
+                        , product.getCategory()
+                        , product.getPrice()
+                        , product.getDiscription()
+                        , 1)); //상품 장바구니에 추가 (장바구니 추가는 1개씩만 가능함)
+                addOrderSuccessfulMessageController(product);
+            } catch (OutOfStockException e) {
+                addOrderFailedMessageController(); //장바구니 추가 실패 메세지 출력
+            }
+            productsController(product.getCategory());
+        } else if (cmd == 2) productsController(product.getCategory());
+        else throw new InvalidateCmdException("잘못된 명령어 입니다");
+    }
+
+    private static void addOrderSuccessfulMessageController(Product product) {
+        View.addOrderSuccessfulMessage(product);//성공메세지 출력
+    }
+
+    private static void addOrderFailedMessageController() {
+        View.addOrderFailedMessage();
+    }
+
+    public void finalizeOrderFormController(List<Product> model, int price) throws IOException {
+        View.finalizeOrderForm(model, price);
+        int cmd = Integer.parseInt(bufferedReader.readLine());
+        if (cmd == 1) {
+            finalizeOrderMessageController(orderService.finalizeOrder(), price);
+        } else if (cmd == 2) {
+            indexController();//메인으로 돌아가기
+        }
+    }
+
+    public void finalizeOrderMessageController(Map<String, int[]> model, int price) {
+        View.finalizeOrderMessage(model, price);
+    }
+
+    public static void init() {
         //ELECTRONIC 카테고리
-        productRepository.save(new Product("Galaxy S24", ELECTRONIC,1200000,"최신 안드로이드 스마트폰",25));
+        productRepository.save(new Product("Galaxy S24", ELECTRONIC, 1200000, "최신 안드로이드 스마트폰", 25));
         productRepository.save(new Product("iPhone 15", ELECTRONIC, 1350000, "Apple의 최신 스마트폰", 30));
         productRepository.save(new Product("MacBook Pro", ELECTRONIC, 2400000, "M3 칩셋이 탑재된 노트북", 15));
         productRepository.save(new Product("AirPods Pro", ELECTRONIC, 350000, "노이즈 캔슬링 무선 이어폰", 1));
