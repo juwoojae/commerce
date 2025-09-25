@@ -30,6 +30,13 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @param name productRepository 에서 업데이트 될 name -> findByName 으로 findproduct 찾기
+     * @param updateProduct 업데이트 할 updateProduct
+     * @return findProduct(바뀌기 전의 product)
+     * 주의 !! update 할때는 이름은 바꾸면 안됩니다
+     */
     @Override
     public Product update(String name, Product updateProduct) {
         Product findProduct = findByName(name);
