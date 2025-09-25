@@ -1,7 +1,6 @@
 package commerce.hello.service.managerSevice;
 
-import commerce.hello.SecurityException;
-import commerce.hello.domain.member.Member;
+import commerce.hello.exception.SecurityException;
 import commerce.hello.domain.product.Category;
 import commerce.hello.domain.product.Product;
 

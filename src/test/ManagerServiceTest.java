@@ -1,6 +1,6 @@
-package Test;
+package test;
 
-import commerce.hello.SecurityException;
+import commerce.hello.exception.SecurityException;
 import commerce.hello.domain.order.OrderRepository;
 import commerce.hello.domain.order.OrderRepositoryImpl;
 import commerce.hello.domain.product.Product;

@@ -1,4 +1,4 @@
-package commerce.hello;
+package commerce.hello.exception;
 
 public class OutOfStockException extends RuntimeException {
   public OutOfStockException(String message) {

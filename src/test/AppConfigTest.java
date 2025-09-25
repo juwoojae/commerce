@@ -1,27 +1,33 @@
-package Test;
+package test;
 
-import commerce.hello.OutOfStockException;
 import commerce.hello.domain.order.OrderRepository;
 import commerce.hello.domain.order.OrderRepositoryImpl;
 import commerce.hello.domain.product.Product;
-import static org.junit.jupiter.api.Assertions.*;
-
 import commerce.hello.domain.product.ProductRepository;
 import commerce.hello.domain.product.ProductRepositoryImpl;
+import commerce.hello.exception.OutOfStockException;
+import commerce.hello.exception.SecurityException;
+import commerce.hello.service.managerSevice.ManagerService;
+import commerce.hello.service.managerSevice.ManagerServiceImpl;
+import commerce.hello.service.managerSevice.ProxyManagerService;
 import commerce.hello.service.orderService.OrderService;
 import commerce.hello.service.orderService.StandardOrderService;
+import commerce.hello.web.AppConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 import static commerce.hello.domain.product.Category.ELECTRONIC;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class OrderServiceTest {
+public class AppConfigTest {
 
-    ProductRepository productRepository = new ProductRepositoryImpl();
-    OrderRepository orderRepository = new OrderRepositoryImpl();
-    OrderService orderService = new StandardOrderService(orderRepository,productRepository);
+    AppConfig appConfig = new AppConfig();
+    ProductRepository productRepository = appConfig.productRepository();
+    OrderRepository orderRepository = appConfig.orderRepository();
+    OrderService orderService = appConfig.orderService(orderRepository, productRepository);
+    ManagerService managerService = appConfig.managerService(new ManagerServiceImpl(productRepository), "1q2w3e4r!@");
 
     @BeforeEach
     void beforEach(){
@@ -32,42 +38,20 @@ public class OrderServiceTest {
     }
 
     @Test
-    void OrderRepositoryTest(){
-
-        Product product1 = new Product("Galaxy S24", ELECTRONIC,1200000,"최신 안드로이드 스마트폰",25);
-        Product product2 = new Product("iPhone 15", ELECTRONIC,100000,"최신 Apple 스마트폰",2);
-        OrderRepository orderRepository = new OrderRepositoryImpl();
-        orderRepository.save(product1);
-        orderRepository.save(product2);
-
-        int product1Quantity = product1.getQuantity();
-        assertEquals(26, ++product1Quantity);
-
-        assertEquals(orderRepository.findByName("Galaxy S24"), product1);
-        assertEquals(orderRepository.findByName("Galaxy S2"),null);
-
-        assertFalse(orderRepository.storeIsEmpty());
-
-        assertEquals(2,orderRepository.findAll().size());
-
-        orderRepository.clearStore();
-        assertEquals(0,orderRepository.findAll().size());
-    }
-    @Test
-   void addOrderTest(){
-        //장바구니에 최초 추가하는 경우
+    void appConfigTest(){
         orderService.addOrder(new Product("Galaxy S24",ELECTRONIC,1200000,"최신 안드로이드 스마트폰",1));
         assertEquals(1,orderRepository.findAll().size());
         assertEquals(1,orderRepository.findByName("Galaxy S24").getQuantity());
         System.out.println(productRepository.findAll(ELECTRONIC));
-        orderService.addOrder(new Product("Galaxy S24",ELECTRONIC,1200000,"최신 안드로이드 스마트폰",1));
+        this.orderService.addOrder(new Product("Galaxy S24",ELECTRONIC,1200000,"최신 안드로이드 스마트폰",1));
         //장바구니에 있는상품을 또 추가하는 경우
         assertEquals(2,orderRepository.findByName("Galaxy S24").getQuantity());
         //
-        orderService.addOrder(new Product("AirPods Pro", ELECTRONIC, 350000, "노이즈 캔슬링 무선 이어폰", 1));
+        this.orderService.addOrder(new Product("AirPods Pro", ELECTRONIC, 350000, "노이즈 캔슬링 무선 이어폰", 1));
         //재고수량을 넘어가는경우
         //orderService.addOrder(new Product("AirPods Pro", ELECTRONIC, 350000, "노이즈 캔슬링 무선 이어폰", 1));
-        assertThrows(OutOfStockException.class, ()->{orderService.addOrder(new Product("AirPods Pro", ELECTRONIC, 350000, "노이즈 캔슬링 무선 이어폰", 1));});
+        assertThrows(OutOfStockException.class, ()->{
+            this.orderService.addOrder(new Product("AirPods Pro", ELECTRONIC, 350000, "노이즈 캔슬링 무선 이어폰", 1));});
         assertEquals(1,orderRepository.findByName("AirPods Pro").getQuantity());
     }
     @Test
@@ -83,6 +67,23 @@ public class OrderServiceTest {
 
         assertEquals(23,productRepository.findByName("Galaxy S24").getQuantity());
         assertFalse(orderService.hasOrder());
+    }
+    @Test
+    void managerServiceTest(){
+        //로그인 검증하기
+        assertThrows(SecurityException.class,()->{new ProxyManagerService(new ManagerServiceImpl(productRepository),"1233");});
+        ManagerService managerService = new ProxyManagerService(new ManagerServiceImpl(productRepository),"1q2w3e4r!@");
+        //register 검증
+        Product product = managerService.register(new Product("new1", ELECTRONIC, 1, "추가1", 1));
+        managerService.register(new Product("new2", ELECTRONIC, 1, "추가2", 1));
+        assertEquals(product, productRepository.findByName("new1"));
+        //remove 검증
+        managerService.remove("new1");
+        assertEquals(null,productRepository.findByName("new1"));
+        //update 검증
+        Product product1 = managerService.update("new2", new Product("new2", ELECTRONIC, 100, "추가3", 1));
+        System.out.println(product1);
+        assertEquals(100,productRepository.findByName("new2").getPrice());
 
     }
 }

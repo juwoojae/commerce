@@ -1,6 +1,6 @@
 package commerce.hello.service.orderService;
 
-import commerce.hello.OutOfStockException;
+import commerce.hello.exception.OutOfStockException;
 import commerce.hello.domain.order.OrderRepository;
 import commerce.hello.domain.product.Product;
 import commerce.hello.domain.product.ProductRepository;
