@@ -57,16 +57,21 @@ public class StandardOrderService implements OrderService {
      * 주문 확정 메서드
      * 1. productRepository(재고) 에서 차감하는 로직
      * 2. 장바구니 초기화
-
+     @return : 수정물품 ,{재고수량, 차감후 최종수량} 을 저장하는 Map
      */
     @Override
-    public void finalizeOrder() {
+    public Map<String,int []> finalizeOrder() {
+        Map<String,int []> stockOrderInfo = new HashMap<>();  //마지막에 리턴할 맵
         for (Product orderProduct : orderRepository.findAll()) {
-            //orderProduct 의 상품 재고
-            Product stockProduct = productRepository.findByName(orderProduct.getName());
-            stockProduct.setQuantity(stockProduct.getQuantity() - orderProduct.getQuantity());//재고 수정하기
+            Product stockProduct = productRepository.findByName(orderProduct.getName());//orderProduct 의 상품 재고
+            int stockProductQuantity = stockProduct.getQuantity(); //재고의 총 수량
+            int orderProductQuantity = orderProduct.getQuantity(); //장바구니에 저장된 총 수량
+            int diffStockQuantity = stockProductQuantity - orderProductQuantity; //재고 총 수량 - 장바구니에 있던 수량 = 차감후 총수량
+            stockProduct.setQuantity(diffStockQuantity);//재고 수정하기
+            stockOrderInfo.put(stockProduct.getName(),new int[]{stockProductQuantity, diffStockQuantity}); //수정 물품,{재고수량, 차감후 최종수량} 을 저장
         }
-        orderRepository.clearStore();
+        orderRepository.clearStore(); //장바구니 초기화 해주기
+        return stockOrderInfo;
     }
 
     /**

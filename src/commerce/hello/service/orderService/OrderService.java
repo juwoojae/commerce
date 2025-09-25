@@ -4,6 +4,7 @@ package commerce.hello.service.orderService;
 import commerce.hello.domain.product.Product;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface OrderService {
@@ -12,7 +13,7 @@ public interface OrderService {
 
     int calculateOrder();
 
-    void finalizeOrder();
+    Map<String,int []> finalizeOrder();
 
     boolean hasOrder();
 

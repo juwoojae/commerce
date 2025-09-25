@@ -13,6 +13,8 @@ import commerce.hello.service.orderService.StandardOrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static commerce.hello.domain.product.Category.ELECTRONIC;
 
 public class OrderServiceTest {
@@ -74,8 +76,13 @@ public class OrderServiceTest {
         orderService.addOrder(new Product("Galaxy S24",ELECTRONIC,1200000,"최신 안드로이드 스마트폰",1));
         orderService.addOrder(new Product("iPhone 15", ELECTRONIC, 1350000, "Apple의 최신 스마트폰", 1));
         assertEquals(3750000,orderService.calculateOrder());
-        orderService.finalizeOrder(); //주문완료
+        Map<String,int[]> finalizeOrder = orderService.finalizeOrder(); //주문완료
+        for (String string : finalizeOrder.keySet()) {
+            System.out.println(string+" "+ finalizeOrder.get(string)[0] +"->"+finalizeOrder.get(string)[1]);
+        }
+
         assertEquals(23,productRepository.findByName("Galaxy S24").getQuantity());
         assertFalse(orderService.hasOrder());
+
     }
 }

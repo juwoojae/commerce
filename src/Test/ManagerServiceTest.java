@@ -47,5 +47,6 @@ public class ManagerServiceTest {
         Product product1 = managerService.update("new2", new Product("new2", ELECTRONIC, 100, "추가3", 1));
         System.out.println(product1);
         assertEquals(100,productRepository.findByName("new2").getPrice());
+
     }
 }
