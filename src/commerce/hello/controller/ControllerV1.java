@@ -48,7 +48,7 @@ public class ControllerV1 {
         View.products(products); //해당 카테고리 리스트 조회
         if (orderService.hasOrder()) { //장바구니에 주문이 하나라도 있는경우
             int size = products.size();
-            orderManagerController(size);
+            orderOptionController(size);
             int cmd = Integer.parseInt(bufferedReader.readLine());
             if (0 < cmd && cmd <= size) {
                 orderFormController(products.get(cmd - 1)); //선택한 상품 장바구니 추가 퐄으로 이동
@@ -74,7 +74,7 @@ public class ControllerV1 {
         }
     }
 
-    public void orderManagerController(int size) {
+    public void orderOptionController(int size) {
         View.orderOption(size); //주문관리 출력하기
     }
 

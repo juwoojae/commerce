@@ -10,6 +10,10 @@ import java.util.Locale;
 import java.util.Map;
 
 public class View {
+    /**
+     * 첫 시작화면 (메인메뉴)
+     * 주문이 완료되면 이쪽으로 리다이렉트
+     */
     public static void index() {
         System.out.println();
         System.out.println("[ 실시간 커머스 플랫폼 메인 ]");
@@ -22,6 +26,15 @@ public class View {
     }
 
     //여기서 부터 주문 서비스
+
+    /**
+     * 1. 전자제품
+     * 2. 의류
+     * 3. 식품
+     * 중에 하나의 리스트를 컨트롤러가 넘겨주면
+     * 여기서 화면 출력
+     * @param products
+     */
     public static void products(List<Product> products) {
         System.out.println();
         System.out.printf("[ %s 카테고리 ] \n", products.get(0).getCategory().getName());
@@ -31,6 +44,11 @@ public class View {
         System.out.println("0. 뒤로 가기");
     }
 
+    /**
+     * 상품을 선택했을때
+     * 장바구니에 추가할것인지 말것인지를 클라이언트에게 보여주는 선택폼
+     * @param product
+     */
     public static void orderForm(Product product) {
         System.out.println();
         System.out.printf("선택한 상품: %s \n", product);
@@ -39,16 +57,28 @@ public class View {
         System.out.printf("입력: ");
     }
 
+    /**
+     * 장바구니에 성공적으로 추가되었을때 출력해주는 메세지
+     * @param product
+     */
     public static void addOrderSuccessfulMessage(Product product) {
         System.out.println();
         System.out.printf("%s 가 장바구니에 추가되었습니다.\n", product.getName());
     }
 
+    /**
+     * OutOfStuckException을 던졌을때 장바구니추가에 실패했음을 알리는 메세지
+     */
     public static void addOrderFailedMessage() {
         System.out.println();
         System.out.println("해당상품은 현재 재고가 없습니다");
     }
 
+    /**
+     * 만약 장바구니에 상품이 하나라도 있다면 orderOptionController 가
+     * 이 view 를 보여준다
+     * @param size
+     */
     public static void orderOption(int size) {
         System.out.println();
         System.out.println("[ 주문 관리 ]");

@@ -67,7 +67,9 @@ public class StandardOrderService implements OrderService {
             int stockProductQuantity = stockProduct.getQuantity(); //재고의 총 수량
             int orderProductQuantity = orderProduct.getQuantity(); //장바구니에 저장된 총 수량
             int diffStockQuantity = stockProductQuantity - orderProductQuantity; //재고 총 수량 - 장바구니에 있던 수량 = 차감후 총수량
-            stockProduct.setQuantity(diffStockQuantity);//재고 수정하기
+            //!!중요 재고 차감후 0 이되었다면 아예 productRepository 에서 빼주어야함
+            if(diffStockQuantity == 0) productRepository.delete(stockProduct.getName());
+            else stockProduct.setQuantity(diffStockQuantity);//재고 수정하기
             stockOrderInfo.put(stockProduct.getName(),new int[]{stockProductQuantity, diffStockQuantity}); //수정 물품,{재고수량, 차감후 최종수량} 을 저장
         }
         orderRepository.clearStore(); //장바구니 초기화 해주기

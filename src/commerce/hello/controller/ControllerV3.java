@@ -20,7 +20,7 @@ public class ControllerV3 extends ControllerV2 {
         try {
             View.index();
             int cmd = Integer.parseInt(bufferedReader.readLine());
-            if (0 < cmd && cmd < 4) productsOptionController(Category.codeToCategory(cmd));
+            if (0 < cmd && cmd < 4) productsOptionController(Category.codeToCategory(cmd)); //V2 ->V3 수정 내용 productsOptionController 요청
             else if (cmd == 0) System.exit(0);
             else if (cmd == 6) authenticateManagerFormController();
             else throw new InvalidateCmdException("잘못된 명령어 입니다");
@@ -31,21 +31,26 @@ public class ControllerV3 extends ControllerV2 {
     }
 
     private void productsOptionController(Category category) throws IOException {
-        View.productsOption(category);
-        int cmd = Integer.parseInt(bufferedReader.readLine());
-        if (cmd == 1) productsController(category); //(카테고리) 번호를 카테고리 로 전환 1. 전자기기, 2.옷, 3.음식
-        else if (cmd == 2) filterProductsUnderController(queryService.findProductsUnder(category));
-        else if (cmd == 3) filterProductsOverController(queryService.findProductsOver(category));
-        else if (cmd == 0) { //이전화면으로
-            indexController();
-        }
+       try {
+           View.productsOption(category);
+           int cmd = Integer.parseInt(bufferedReader.readLine());
+           if (cmd == 1) productsController(category); //(카테고리) 번호를 카테고리 로 전환 1. 전자기기, 2.옷, 3.음식
+           else if (cmd == 2) filterProductsUnderController(queryService.findProductsUnder(category));
+           else if (cmd == 3) filterProductsOverController(queryService.findProductsOver(category));
+           else if (cmd == 0) { //이전화면으로
+               indexController();
+           }else throw new InvalidateCmdException("잘못된 명령어 입니다");
+       }catch (InvalidateCmdException e){
+           System.out.println("잘못된 명령어 입니다. 다시 입력해주세요");
+           productsOptionController(category);
+       }
     }
 
     private void filterProductsUnderController(List<Product> model) throws IOException {
         View.filterProductsUnder(model);
         if (orderService.hasOrder()) { //장바구니에 주문이 하나라도 있는경우 -> orderManagerController 를 호출
             int size = model.size();
-            orderManagerController(size);
+            orderOptionController(size);
             int cmd = Integer.parseInt(bufferedReader.readLine());
             if (0 < cmd && cmd <= size) {
                 orderFormController(model.get(cmd - 1)); //선택한 상품 장바구니 추가 퐄으로 이동
@@ -76,7 +81,7 @@ public class ControllerV3 extends ControllerV2 {
         View.filterProductsOver(model);
         if (orderService.hasOrder()) { //장바구니에 주문이 하나라도 있는경우
             int size = model.size();
-            orderManagerController(size);
+            orderOptionController(size);
             int cmd = Integer.parseInt(bufferedReader.readLine());
             if (0 < cmd && cmd <= size) {
                 orderFormController(model.get(cmd - 1)); //선택한 상품 장바구니 추가 퐄으로 이동
@@ -106,8 +111,6 @@ public class ControllerV3 extends ControllerV2 {
     @Override
     public void finalizeOrderFormController(List<Product> model) throws IOException {
         int price = orderService.calculateOrder();//장바구니 총액 계산
-        System.out.println("ControllerV3.finalizeOrderFormController");
-        System.out.println(orderService.listOrders());
         View.finalizeOrderForm(model, price);
         int cmd = Integer.parseInt(bufferedReader.readLine());
         if (cmd == 1) {
