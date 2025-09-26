@@ -145,7 +145,7 @@ public class ControllerV2 extends ControllerV1 {
             } else {
                 throw new InvalidateCmdException("잘못된 명령어 입니다");
             }
-        } catch (InvalidateCmdException e) {
+        } catch (InvalidateCmdException | NumberFormatException e) {
             System.out.println("잘못된 명령어 입니다. 다시 입력해주세요");
             editProductOptionController(product);
         }
