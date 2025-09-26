@@ -24,7 +24,7 @@ public class ControllerV3 extends ControllerV2 {
             else if (cmd == 0) System.exit(0);
             else if (cmd == 6) authenticateManagerFormController();
             else throw new InvalidateCmdException("잘못된 명령어 입니다");
-        } catch (InvalidateCmdException e) {
+        } catch (InvalidateCmdException | NumberFormatException e) {
             System.out.println("잘못된 명령어 입니다. 다시 입력해주세요");
             indexController();
         }
@@ -40,7 +40,7 @@ public class ControllerV3 extends ControllerV2 {
            else if (cmd == 0) { //이전화면으로
                indexController();
            }else throw new InvalidateCmdException("잘못된 명령어 입니다");
-       }catch (InvalidateCmdException e){
+       }catch (InvalidateCmdException | NumberFormatException e){
            System.out.println("잘못된 명령어 입니다. 다시 입력해주세요");
            productsOptionController(category);
        }
@@ -139,7 +139,7 @@ public class ControllerV3 extends ControllerV2 {
                 finalizeOrderMessageController(finalizeOrder,oldPrice,newPrice, Grade.codeToGrade(cmd));
                 indexController();
             } else throw new InvalidateCmdException("잘못된 명령어 입니다");
-        } catch (InvalidateCmdException e) {
+        } catch (InvalidateCmdException | NumberFormatException e) {
             System.out.println("잘못된 명령어 입니다. 다시 입력해주세요");
             gradeFormController();
         }

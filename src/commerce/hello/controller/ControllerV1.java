@@ -37,7 +37,7 @@ public class ControllerV1 {
             if (0 < cmd && cmd < 4) productsController(Category.codeToCategory(cmd));
             else if (cmd == 0) System.exit(0);
             throw new InvalidateCmdException("잘못된 명령어 입니다");
-        }catch (InvalidateCmdException e){
+        }catch (InvalidateCmdException | NumberFormatException e){
             System.out.println("잘못된 명령어 입니다. 다시 입력해주세요");
             indexController();
         }
