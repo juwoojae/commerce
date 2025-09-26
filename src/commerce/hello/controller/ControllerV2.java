@@ -33,7 +33,7 @@ public class ControllerV2 extends ControllerV1 {
             else if (cmd == 6) authenticateManagerFormController();
             else if (cmd == 0) System.exit(0);
             else throw new InvalidateCmdException("잘못된 명령어 입니다");
-        } catch (InvalidateCmdException e) {
+        } catch (InvalidateCmdException | NumberFormatException e) {
             System.out.println("잘못된 명령어 입니다. 다시 입력해주세요");
             indexController();
         }
@@ -64,9 +64,15 @@ public class ControllerV2 extends ControllerV1 {
 
 
     public void addProductController() throws IOException {
-        View.addProduct();
-        int cmd = Integer.parseInt(bufferedReader.readLine());
-        addProductFormController(cmd);
+        try {
+            View.addProduct();
+            int cmd = Integer.parseInt(bufferedReader.readLine());
+            if(0<cmd && cmd<4) addProductFormController(cmd);
+            else throw new InvalidateCmdException(" 잘못된 명령어 ");
+        }catch (InvalidateCmdException | NumberFormatException e) {
+            System.out.println("잘못된 명령어 입니다. 다시 입력해주세요");
+            addProductController();
+        }
     }
 
     public void addProductFormController(int code) throws IOException {
