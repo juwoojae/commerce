@@ -55,10 +55,10 @@ public class ControllerV2 extends ControllerV1 {
     public void managerOptionController() throws IOException {
         View.managerOption();
         int cmd = Integer.parseInt(bufferedReader.readLine());
-        if (cmd == 1) addProductController();
-        else if (cmd == 2) editProductController();
-        else if (cmd == 3) removeProductController();
-        else if (cmd == 0) indexController();
+        if (cmd == 1) addProductController(); //상품 추가
+        else if (cmd == 2) editProductController(); //상품 수정
+        else if (cmd == 3) removeProductController();  //상품 제거
+        else if (cmd == 0) indexController(); //메인 화면
         else throw new InvalidateCmdException("잘못된 명령어 입니다");
     }
 
@@ -92,10 +92,11 @@ public class ControllerV2 extends ControllerV1 {
     public void confirmAddProductFormController(Product product) throws IOException {
         View.confirmAddProductForm(product);
         int cmd = Integer.parseInt(bufferedReader.readLine());
-        if (cmd == 1) {
+        if (cmd == 1) { //확정
+            managerService.register(product);
             confirmAddProductMessageController();
             managerOptionController();
-        } else if (cmd == 2) {
+        } else if (cmd == 2) { //취소
             managerOptionController();
         } else {
             throw new InvalidateCmdException("잘못된 명령어 입니다");

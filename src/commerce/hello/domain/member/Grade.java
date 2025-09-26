@@ -12,4 +12,10 @@ public enum Grade {
     public double getDiscountRate() {
         return discountRate;
     }
+    public static Grade codeToGrade(int code){
+        if(code==1) return BRONZE;
+        else if (code==2) return SILVER;
+        else if (code==3) return GOLD;
+        else return PLATINUM;
+    }
 }

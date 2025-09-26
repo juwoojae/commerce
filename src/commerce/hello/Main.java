@@ -12,7 +12,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         init.init();  //데이터 케이스 넣기
-        ControllerV1 consoleController = new ControllerV3();
+        ControllerV3 consoleController = new ControllerV3();
         consoleController.indexController();
 
     }

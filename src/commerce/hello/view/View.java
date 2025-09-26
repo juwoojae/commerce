@@ -84,10 +84,10 @@ public class View {
     public static void finalizeOrderMessage(Map<String, int[]> result, int standardPrice, int gradeBasedPrice, Grade grade) {
         int diffPrice = standardPrice - gradeBasedPrice;
         System.out.println();
-        System.out.println("주문이 완료되었습니다!");
-        System.out.printf("할인전 금액: %s원", String.format("%,d", standardPrice));
-        System.out.printf("%s 등급 할인(%d%%): %d원", grade, grade.getDiscountRate(),diffPrice);
-        System.out.printf("최종 결제 금액: %s원", String.format("%,d", gradeBasedPrice));
+        System.out.println("주문이 완료되었습니다!\n");
+        System.out.printf("할인전 금액: %s원\n", String.format("%,d", standardPrice));
+        System.out.printf("%s 등급 할인(%d%%): %d원\n", grade, (int)(grade.getDiscountRate()*100),diffPrice);
+        System.out.printf("최종 결제 금액: %s원\n", String.format("%,d", gradeBasedPrice));
         for (String string : result.keySet()) {
             System.out.printf("%s 재고가 %d개 → %d개로 업데이트되었습니다.\n", string, result.get(string)[0], result.get(string)[1]);
         }
@@ -225,7 +225,7 @@ public class View {
         System.out.println("0. 뒤로 가기");
     }
 
-    public static void GradeForm() {
+    public static void gradeForm() {
         System.out.println("고객 등급을 입력해주세요.");
         System.out.println("1. BRONZE   :  0% 할인");
         System.out.println("2. SILVER   :  5% 할인");

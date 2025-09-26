@@ -62,8 +62,8 @@ public class StandardOrderService implements OrderService {
     @Override
     public Map<String,int []> finalizeOrder() {
         Map<String,int []> stockOrderInfo = new HashMap<>();  //마지막에 리턴할 맵
-        for (Product orderProduct : orderRepository.findAll()) {
-            Product stockProduct = productRepository.findByName(orderProduct.getName());//orderProduct 의 상품 재고
+        for (Product orderProduct : orderRepository.findAll()) { //   주문상품 : 주문상품 리스트
+            Product stockProduct = productRepository.findByName(orderProduct.getName());// 주문상품으로 재고에서 같은이름을가진 상품 반환
             int stockProductQuantity = stockProduct.getQuantity(); //재고의 총 수량
             int orderProductQuantity = orderProduct.getQuantity(); //장바구니에 저장된 총 수량
             int diffStockQuantity = stockProductQuantity - orderProductQuantity; //재고 총 수량 - 장바구니에 있던 수량 = 차감후 총수량

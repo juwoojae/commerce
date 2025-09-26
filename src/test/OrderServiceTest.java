@@ -1,5 +1,6 @@
 package test;
 
+import commerce.hello.domain.member.Grade;
 import commerce.hello.exception.OutOfStockException;
 import commerce.hello.domain.order.OrderRepository;
 import commerce.hello.domain.order.OrderRepositoryImpl;
@@ -8,8 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import commerce.hello.domain.product.ProductRepository;
 import commerce.hello.domain.product.ProductRepositoryImpl;
+import commerce.hello.service.orderService.GradeBasedOrderService;
 import commerce.hello.service.orderService.OrderService;
 import commerce.hello.service.orderService.StandardOrderService;
+import commerce.hello.service.queryService.QueryService;
+import commerce.hello.service.queryService.QueryServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +26,7 @@ public class OrderServiceTest {
     ProductRepository productRepository = ProductRepositoryImpl.getInstance();
     OrderRepository orderRepository = new OrderRepositoryImpl();
     OrderService orderService = new StandardOrderService(orderRepository,productRepository);
+    QueryService queryService = new QueryServiceImpl(productRepository);
 
     @BeforeEach
     void beforEach(){
@@ -69,7 +74,12 @@ public class OrderServiceTest {
         //orderService.addOrder(new Product("AirPods Pro", ELECTRONIC, 350000, "노이즈 캔슬링 무선 이어폰", 1));
         assertThrows(OutOfStockException.class, ()->{orderService.addOrder(new Product("AirPods Pro", ELECTRONIC, 350000, "노이즈 캔슬링 무선 이어폰", 1));});
         assertEquals(1,orderRepository.findByName("AirPods Pro").getQuantity());
+        //재고 차감 확인;
+        //주문완료후 계산하기
+        orderService.finalizeOrder();
+        System.out.println(queryService.listProducts(ELECTRONIC));
     }
+
     @Test
     void finalizeOrderTest(){
         orderService.addOrder(new Product("Galaxy S24",ELECTRONIC,1200000,"최신 안드로이드 스마트폰",1));
@@ -84,5 +94,14 @@ public class OrderServiceTest {
         assertEquals(23,productRepository.findByName("Galaxy S24").getQuantity());
         assertFalse(orderService.hasOrder());
 
+    }
+    @Test
+    void calculatorTest(){
+        orderRepository.save(new Product("Galaxy S24",ELECTRONIC,1200000,"최신 안드로이드 스마트폰",1));
+        OrderService orderService1 = new GradeBasedOrderService(orderRepository,productRepository);
+        GradeBasedOrderService gradeBasedOrderService = (GradeBasedOrderService) orderService1;
+        System.out.println(gradeBasedOrderService.calculateOrder());
+
+        System.out.println(gradeBasedOrderService.calculateOrder(Grade.GOLD));
     }
 }

@@ -55,7 +55,7 @@ public class ControllerV1 {
             } else if (cmd == 0) {//뒤로가기
                 indexController();
             } else if (cmd == size + 1) { //장바구니 확인
-                finalizeOrderFormController(orderService.listOrders(), orderService.calculateOrder());
+                finalizeOrderFormController(orderService.listOrders());
             } else if (cmd == size + 2) { //주문 취소 -> 첫화면으로 돌아가기
                 orderCleanController();
                 indexController();
@@ -94,7 +94,7 @@ public class ControllerV1 {
         View.orderForm(product); //장바구니 폼 출력
         int cmd = Integer.parseInt(bufferedReader.readLine());
         if (cmd == 1) { //장바구니에 추가하기
-            try {
+            try { //여기가 장바구니 추가 로직
                 orderService.addOrder(new Product(product.getName()
                         , product.getCategory()
                         , product.getPrice()
@@ -118,18 +118,26 @@ public class ControllerV1 {
         View.addOrderFailedMessage();
     }
 
-    public void finalizeOrderFormController(List<Product> model, int price) throws IOException {
-        View.finalizeOrderForm(model, price);
+    /**
+     * 주문을 확정시키는 폼을 출력하고
+     * 1. 이면 주문확정
+     * 2. 면 주문취소
+     * @param model
+     * @throws IOException
+     */
+    public void finalizeOrderFormController(List<Product> model) throws IOException {
+        View.finalizeOrderForm(model, orderService.calculateOrder());
         int cmd = Integer.parseInt(bufferedReader.readLine());
-        if (cmd == 1) {
-            finalizeOrderMessageController(orderService.finalizeOrder(), price);
+        if (cmd == 1) { //주문확정을 하면
+            Map<String, int[]> finalizeOrder = orderService.finalizeOrder();
+            finalizeOrderMessageController(finalizeOrder);
         } else if (cmd == 2) {
             indexController();//메인으로 돌아가기
         }
     }
 
-    public void finalizeOrderMessageController(Map<String, int[]> model, int price) {
-        View.finalizeOrderMessage(model, price);
+    public void finalizeOrderMessageController(Map<String, int[]> model) {
+        View.finalizeOrderMessage(model, orderService.calculateOrder());
     }
 
 }
