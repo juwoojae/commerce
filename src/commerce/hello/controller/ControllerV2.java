@@ -180,9 +180,9 @@ public class ControllerV2 extends ControllerV1 {
     }
 
     public void editProductFormQuantiryMessageController(Product oldProduct, int newQuantity) throws IOException {
-        View.editProductFormPriceMessage(oldProduct, newQuantity);
+        View.editProductFormQuantiryMessage(oldProduct, newQuantity);
         Product newProduct = oldProduct;  //옛 상품에서 가격만 바꾸기
-        newProduct.setPrice(newQuantity);
+        newProduct.setQuantity(newQuantity);
         managerService.update(oldProduct.getName(), newProduct);
         managerOptionController();
     }
